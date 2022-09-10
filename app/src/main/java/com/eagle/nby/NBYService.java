@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.content.Intent;
 import android.graphics.Path;
+import android.graphics.Point;
 import android.os.Build;
 import android.os.Message;
 import android.os.Looper;
@@ -70,7 +71,7 @@ public class NBYService extends AccessibilityService {
             {
                 if ("com.eg.android.AlipayGphone".equals(pkgName)) {
                     if (String.valueOf(className).startsWith("com.alipay.mobile.nebulax.integration.mpaas.activity.NebulaActivity$Lite")) {
-                        sendEventMessage(EVENT_PARENTS_ENTRANCE, true);
+                        sendEventMessage(EVENT_PARENTS_ENTRANCE, true, 3000);
                     }
                 } else if ("com.huawei.android.launcher".equals(pkgName)) {
 //                    List<AccessibilityNodeInfo> nodeInfos = findNodeInfoByText(this, "宁搏疫");
@@ -107,9 +108,13 @@ public class NBYService extends AccessibilityService {
     }
 
     private void sendEventMessage(int event, boolean force) {
+        sendEventMessage(event, force, 0);
+    }
+
+    private void sendEventMessage(int event, boolean force, int delayed) {
         if (mEvent != event || force) {
             mHandler.removeCallbacksAndMessages(null);
-            mHandler.sendEmptyMessageDelayed(event, TIME_DEALYED);
+            mHandler.sendEmptyMessageDelayed(event, delayed > 0 ? delayed : TIME_DEALYED);
         }
     }
     public static final int EVENT_PARENTS_ENTRANCE = 100;
@@ -125,24 +130,37 @@ public class NBYService extends AccessibilityService {
             mEvent = msg.what;
             switch(msg.what){
                 case EVENT_PARENTS_ENTRANCE:
+                {
                     Utils.logD(TAG, "EVENT_PARENTS_ENTRANCE");
-                    coordinatesClick(NBYService.this, 200, 1145);
+                    Point point = PreHelper.getInstance(NBYService.this).getParentEntrancePoint();
+                    coordinatesClick(NBYService.this, point.x, point.y);
+                }
                     break;
                 case EVENT_SIGN_IN:
+                {
                     Utils.logD(TAG, "EVENT_SIGN_IN");
-                    coordinatesClick(NBYService.this, 767, 921);
+                    Point point = PreHelper.getInstance(NBYService.this).getSignInPoint();
+                    coordinatesClick(NBYService.this, point.x, point.y);
+                }
                     break;
                 case EVENT_HEALTH_OK:
+                {
                     Utils.logD(TAG, "EVENT_HEALTH_OK");
-                    coordinatesClick(NBYService.this, 420, 1810);
+                    Point point = PreHelper.getInstance(NBYService.this).getHealthPoint();
+                    coordinatesClick(NBYService.this, point.x, point.y);
                     if (mEvent == EVENT_HEALTH_OK) {
                         sendEventMessage(EVENT_DO_SIGN_IN);
                     }
+                }
+
                     break;
                 case EVENT_DO_SIGN_IN:
+                {
                     Utils.logD(TAG, "EVENT_DO_SIGN_IN");
-                    coordinatesClick(NBYService.this, 520, 2000);
+                    Point point = PreHelper.getInstance(NBYService.this).getSignInConfirmPoint();
+                    coordinatesClick(NBYService.this, point.x, point.y);
                     sendEventMessage(EVENT_BACK);
+                }
                     break;
                 case EVENT_BACK:
                     Back(NBYService.this);

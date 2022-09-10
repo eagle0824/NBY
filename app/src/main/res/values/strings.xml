@@ -1,4 +1,24 @@
 <resources>
     <string name="app_name">NBY</string>
+    <!--
     <string name="tips">"       服务已经启动\n点击\""宁搏疫\""自动签到"</string>
+    -->
+    <string name="tips">"此软件功能是通过进入\"宁搏疫\"自动实现打卡功能.使用之前需要按照下面操作步骤配置:\n"</string>
+    <string name="tips1">1. 设置手机辅助功能</string>
+    <string name="settings">去设置</string>
+    <string name="service_state_on">辅助功能已打开</string>
+    <string name="service_state_off">辅助功能已关闭</string>
+
+    <string name="tips2">2. 配置输入点坐标</string>
+
+    <string name="parent_entrance">1) 家长入口坐标 </string>
+    <string name="sign_in">2) 签到坐标</string>
+    <string name="health">3) 健康情况坐标</string>
+    <string name="sign_in_confirm">4) 签到确认坐标</string>
+    <string name="x">X:</string>
+    <string name="y">Y:</string>
+
+    <string name="tips3">3. 进入\"宁搏疫\",即可自动打卡</string>
+
+    <string name="notes">如果要关闭自动打卡功能,将手机辅助功能关闭即可</string>
 </resources>
